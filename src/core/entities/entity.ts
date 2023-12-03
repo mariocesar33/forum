@@ -1,7 +1,7 @@
-import { randomUUID } from "node:crypto"
+import { UniqueEntityId } from "./unique-entity-id"
 
 export class Entity<Props> {
-  private _id: string
+  private _id: UniqueEntityId
   protected props: Props
 
   get id() {
@@ -10,6 +10,6 @@ export class Entity<Props> {
 
   constructor(props: Props, id?: string) {
     this.props = props
-    this._id = id ?? randomUUID() // gerar um id caso não tenha identificado
+    this._id = new UniqueEntityId(id) 
   }
 }
