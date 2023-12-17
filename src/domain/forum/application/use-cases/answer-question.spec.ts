@@ -1,21 +1,29 @@
-import { expect, test } from 'vitest'
-
+import { InMemoryAnswersRepository } from '@/test/repositories/in-memory-answers-repository'
 import { AnswerQuestionUseCase } from './answer-question'
-import { AnswersRepository } from '../repositories/answers-repository'
-import { Answer } from '../../enterprise/entities/answer'
 
-const fakeAnswersRepository: AnswersRepository = {
-  create: async (answer: Answer) => {},
-}
+let inMemoryQuestionsRepository: InMemoryAnswersRepository
 
-test('create an answer', async () => {
-  const answerQuestion = new AnswerQuestionUseCase(fakeAnswersRepository)
+// sut => System Under Test
+let sut: AnswerQuestionUseCase
 
-  const { answer } = await answerQuestion.execute({
-    questionId: '1',
-    instructorId: '1',
-    content: 'Nova resposta',
+describe('Create Answer', () => {
+  beforeEach(() => {
+    inMemoryQuestionsRepository = new InMemoryAnswersRepository()
+    sut = new AnswerQuestionUseCase(inMemoryQuestionsRepository)
   })
 
-  expect(answer.content).toEqual('Nova resposta')
+  it('should be able to create an answer', async () => {
+    const { answer } = await sut.execute({
+      instructorId: '1',
+      questionId: '1',
+      content: 'Conteúdo da resposta',
+    })
+
+    // O id não pode ser nulo ao undefined, ao seja, o id não pode ser uma coisa
+    // que não é verdadeiro para o javascript
+    expect(answer.id).toBeTruthy()
+    // como tenho um repositorio posso validar que dentro do meu repositorio,
+    // no item[0] que o id dele seja igual ao answer.id que foi criado.
+    expect(inMemoryQuestionsRepository.items[0].id).toEqual(answer.id)
+  })
 })
