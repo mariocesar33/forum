@@ -1,8 +1,14 @@
 export class Slug {
   public value: string
 
-  constructor(value: string) {
+  // privado porque assim ele não pode ser chamdo de fora dessa classe
+  private constructor(value: string) {
     this.value = value
+  }
+
+  // vai retorna uma nova slug porém já com o valor formatado sem fazer qualquer tipo de formatação
+  static create(slug: string) {
+    return new Slug(slug)
   }
 
   /**
