@@ -1,9 +1,7 @@
-import { InMemoryAnswersRepository } from '@/test/repositories/in-memory-answers-repository'
 import { AnswerQuestionUseCase } from './answer-question'
+import { InMemoryAnswersRepository } from '@/test/repositories/in-memory-answers-repository'
 
 let inMemoryQuestionsRepository: InMemoryAnswersRepository
-
-// sut => System Under Test
 let sut: AnswerQuestionUseCase
 
 describe('Create Answer', () => {
