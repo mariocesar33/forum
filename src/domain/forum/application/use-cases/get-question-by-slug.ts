@@ -9,7 +9,6 @@ interface GetQuestionBySlugUseCaseResponse {
   question: Question
 }
 
-// Responder à pergunta
 export class GetQuestionBySlugUseCase {
   constructor(private questionRepository: QuestionsRepository) {}
 
