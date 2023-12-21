@@ -44,6 +44,7 @@ describe('Fetch Recent Questions', () => {
       page: 2,
     })
 
+    // Espero que na pagina 2 tenha apenas 2 items
     expect(questions).toHaveLength(2)
   })
 })
