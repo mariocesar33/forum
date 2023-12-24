@@ -3,6 +3,7 @@ import { InMemoryQuestionsRepository } from '@/test/repositories/in-memory-quest
 
 import { makeQuestion } from '@/test/factories/make-question'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { NotAllowedError } from './errors/not-allowed-error'
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
 let sut: DeleteQuestionUseCase
@@ -42,13 +43,21 @@ describe('Delete Question', () => {
 
     await inMemoryQuestionsRepository.create(newQuestion)
 
+    const result = await sut.execute({
+      authorId: 'author-2',
+      questionId: 'question-1',
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(NotAllowedError)
+
     // Espero que quando chamo o caso de uso de remoção de uma pergunta,
     // passando um autor que não é o autor da pergunta que criou a pergunta ele rejeita e retorna um erro.
-    expect(() => {
-      return sut.execute({
-        authorId: 'author-2',
-        questionId: 'question-1',
-      })
-    }).rejects.toBeInstanceOf(Error)
+    // expect(() => {
+    //   return sut.execute({
+    //     authorId: 'author-2',
+    //     questionId: 'question-1',
+    //   })
+    // }).rejects.toBeInstanceOf(Error)
   })
 })

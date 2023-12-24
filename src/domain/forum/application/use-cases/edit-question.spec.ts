@@ -3,6 +3,7 @@ import { InMemoryQuestionsRepository } from '@/test/repositories/in-memory-quest
 
 import { makeQuestion } from '@/test/factories/make-question'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { NotAllowedError } from './errors/not-allowed-error'
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
 let sut: EditQuestionUseCase
@@ -48,15 +49,25 @@ describe('Edit Question', () => {
 
     await inMemoryQuestionsRepository.create(newQuestion)
 
+    const result = await sut.execute({
+      authorId: 'author-2',
+      questionId: newQuestion.id.toString(),
+      title: 'Pergunta teste',
+      content: 'Conteúdo teste',
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(NotAllowedError)
+
     // Espero que quando chamo o caso de uso de editar de uma pergunta,
     // passando o ID do autor que não é o autor da pergunta ele deve rejeitar, e retorna um erro.
-    expect(() => {
-      return sut.execute({
-        authorId: 'author-2',
-        questionId: newQuestion.id.toString(),
-        title: 'Pergunta teste',
-        content: 'Conteúdo teste',
-      })
-    }).rejects.toBeInstanceOf(Error)
+    // expect(() => {
+    //   return sut.execute({
+    //     authorId: 'author-2',
+    //     questionId: newQuestion.id.toString(),
+    //     title: 'Pergunta teste',
+    //     content: 'Conteúdo teste',
+    //   })
+    // }).rejects.toBeInstanceOf(Error)
   })
 })

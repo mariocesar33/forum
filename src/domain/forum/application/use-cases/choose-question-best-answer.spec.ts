@@ -5,6 +5,7 @@ import { InMemoryQuestionsRepository } from '@/test/repositories/in-memory-quest
 import { makeAnswer } from '@/test/factories/make-answer'
 import { makeQuestion } from '@/test/factories/make-question'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { NotAllowedError } from './errors/not-allowed-error'
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
 let inMemoryAnswersRepository: InMemoryAnswersRepository
@@ -53,13 +54,21 @@ describe('Choose Question Best Answer', () => {
     await inMemoryQuestionsRepository.create(question)
     await inMemoryAnswersRepository.create(answer)
 
+    const result = await sut.execute({
+      answerId: answer.id.toString(),
+      authorId: 'author-2',
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(NotAllowedError)
+
     // Espero que quando chamo o caso de uso de Escolher a melhor resposta da pergunta,
     // passando um autor que não é o autor da pergunta, ele deve rejeitar, e retorna um erro.
-    expect(() => {
-      return sut.execute({
-        answerId: answer.id.toString(),
-        authorId: 'author-2',
-      })
-    }).rejects.toBeInstanceOf(Error)
+    // expect(() => {
+    //   return sut.execute({
+    //     answerId: answer.id.toString(),
+    //     authorId: 'author-2',
+    //   })
+    // }).rejects.toBeInstanceOf(Error)
   })
 })

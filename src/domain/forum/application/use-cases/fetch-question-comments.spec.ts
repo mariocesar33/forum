@@ -29,13 +29,16 @@ describe('Fetch Question Comments', () => {
       }),
     )
 
-    const { questionComments } = await sut.execute({
+    // const { questionComments } = await sut.execute({
+    const result = await sut.execute({
       questionId: 'question-1',
       page: 1,
     })
 
+    expect(result.value?.questionComments).toHaveLength(3)
+
     // espero um array com 3 items.
-    expect(questionComments).toHaveLength(3)
+    // expect(questionComments).toHaveLength(3)
   })
 
   it('should be able to fetch paginated question comments', async () => {
@@ -47,12 +50,15 @@ describe('Fetch Question Comments', () => {
       )
     }
 
-    const { questionComments } = await sut.execute({
+    // const { questionComments } = await sut.execute({
+    const result = await sut.execute({
       questionId: 'question-3',
       page: 2,
     })
 
+    expect(result.value?.questionComments).toHaveLength(2)
+
     // Espero que na pagina 2, deve ter apenas 2 items
-    expect(questionComments).toHaveLength(2)
+    // expect(questionComments).toHaveLength(2)
   })
 })

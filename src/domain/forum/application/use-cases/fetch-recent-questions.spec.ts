@@ -22,13 +22,15 @@ describe('Fetch Recent Questions', () => {
       makeQuestion({ createdAt: new Date(2022, 11, 23) }),
     )
 
-    const { questions } = await sut.execute({
+    // const { questions } = await sut.execute({
+    const result = await sut.execute({
       page: 1,
     })
 
     // espero que o primeiro objeto que venha dentro de array,
     // seja o objeto que contendo cratedAt com a data mas recente, assim sucessivamente.
-    expect(questions).toEqual([
+    // expect(questions).toEqual([
+    expect(result.value?.questions).toEqual([
       expect.objectContaining({ createdAt: new Date(2022, 11, 23) }),
       expect.objectContaining({ createdAt: new Date(2022, 11, 20) }),
       expect.objectContaining({ createdAt: new Date(2022, 11, 18) }),
@@ -40,11 +42,14 @@ describe('Fetch Recent Questions', () => {
       await inMemoryQuestionsRepository.create(makeQuestion())
     }
 
-    const { questions } = await sut.execute({
+    // const { questions } = await sut.execute({
+    const result = await sut.execute({
       page: 2,
     })
 
+    expect(result.value?.questions).toHaveLength(2)
+
     // Espero que na pagina 2 tenha apenas 2 items
-    expect(questions).toHaveLength(2)
+    // expect(questions).toHaveLength(2)
   })
 })
