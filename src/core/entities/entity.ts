@@ -1,6 +1,8 @@
 import { UniqueEntityId } from './unique-entity-id'
 
-export class Entity<Props> {
+// Essa classe não pode ser instanciada desse jeito (new Entity()),
+// podemos instanciar apenas a classes que herdão ela.
+export abstract class Entity<Props> {
   private _id: UniqueEntityId
   protected props: Props
 
