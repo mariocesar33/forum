@@ -4,7 +4,7 @@ import { InMemoryAnswerAttachmentsRepository } from '@/test/repositories/in-memo
 import { makeAnswer } from '@/test/factories/make-answer'
 import { makeAnswerAttachment } from '@/test/factories/make-answer-attachments'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { NotAllowedError } from './errors/not-allowed-error'
+import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
 let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let inMemoryAnswersRepository: InMemoryAnswersRepository
