@@ -2,6 +2,7 @@ import { Comment, CommentProps } from './comment'
 
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
+import { QuestionCommentedEvent } from '../events/question-commented-event'
 
 export interface QuestionCommentProps extends CommentProps {
   questionId: UniqueEntityId
@@ -24,6 +25,15 @@ export class QuestionComment extends Comment<QuestionCommentProps> {
       },
       id,
     )
+
+    const isNewQuestionComment = !id
+
+    // Aqui estou criando o evendo
+    if (isNewQuestionComment) {
+      questionComment.addDomainEvent(
+        new QuestionCommentedEvent(questionComment),
+      )
+    }
 
     return questionComment
   }

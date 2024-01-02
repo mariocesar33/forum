@@ -14,14 +14,14 @@ export class OnAnswerCommented implements EventHandler {
 
   setupSubscriptions(): void {
     DomainEvents.register(
-      this.sendNewCommentNotification.bind(this),
+      this.sendNewAnswerCommentNotification.bind(this),
       AnswerCommentedEvent.name,
     )
   }
 
   // Só é chamada quando um novo comentario é criada no banco de dados
   // e vai fazer o envio da notificação
-  private async sendNewCommentNotification({
+  private async sendNewAnswerCommentNotification({
     answerComment,
   }: AnswerCommentedEvent) {
     const answer = await this.answersRepository.findById(

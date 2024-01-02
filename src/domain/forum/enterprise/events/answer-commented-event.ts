@@ -1,7 +1,7 @@
 import { DomainEvent } from '@/core/events/domain-event'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { AnswerComment } from '../entities/answer-comment'
-// CommentOnAnswer
+
 export class AnswerCommentedEvent implements DomainEvent {
   public ocurredAt: Date
   public answerComment: AnswerComment
